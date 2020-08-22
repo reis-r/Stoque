@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app import db, logout_user, login_manager, login_required, current_user, login_user
 from app.auth.forms import LoginForm, RegisterForm
 from app.auth.models import User
+from app.products.models import Product
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -49,7 +50,13 @@ def dashboard():
     users = []
     for u in User.objects(username=current_user.username):
         users.append({'username': u.username})
-    return render_template('auth/dashboard.html', users=users, name=current_user.username)
+
+    products = Product.objects()
+
+    net_worth = sum(map(lambda x: x['sell_price'], products))
+
+    return render_template('auth/dashboard.html', net_worth=net_worth, \
+    products=products, users=users, name=current_user.username)
 
 @auth.route('/logout')
 def logout():

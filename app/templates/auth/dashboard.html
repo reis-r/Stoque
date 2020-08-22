@@ -18,17 +18,40 @@ Dashboard
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Profile</a></li>
             <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </nav>
 
     <div class="container-fluid">
       <div class="row">
-          <h1 class="page-header">Welcome, {{ name }}</h1>
+          <h1 class="page-header">Welcome, {{ name }}!</h1>
+        </div>
+      </div>
+    <p>
+      <h2>Net worth: ${{net_worth}}</h2>
+    </p>
+    <p>
+      <h3>Product catalog:</h3>
+    </p>
+    <table class="table">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Profit</th>
+        <th scope="col">Buying Price</th>
+        <th scope="col">Selling Price</th>
+      </tr>
+      {% for product in products %}
+      <tr>
+        <td>{{ product['name'] }}</td>
+        <td>{{ product['quantity'] }}</td>
+        <td>{{ product['sell_price'] - product['buy_price']}}</td>
+        <td>{{ product['buy_price']}}</td>
+        <td>{{ product['sell_price']}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
 {% endblock %}
